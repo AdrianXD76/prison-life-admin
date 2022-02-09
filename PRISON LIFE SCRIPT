@@ -1,3 +1,33 @@
+repeat task.wait() until game:IsLoaded() == true
+
+local function GetURL(scripturl)
+	if shared.PrisonLifeDEV then
+		return readfile("prison/"..scripturl)
+	else
+		local res = game:HttpGet("https://raw.githubusercontent.com/BirthScripts/prison-life-admin/main/PRISON%20LIFE%20SCRIPT"..scripturl, true)
+		assert(res ~= "404: Not Found", "File not found")
+		return res
+	end
+end
+local getasset = getsynasset or getcustomasset
+if getasset == nil and getgenv().getcustomasset == nil then
+	getgenv().getcustomasset = function(location) return "rbxasset://"..location end
+	getasset = getgenv().getcustomasset
+end
+local queueteleport = syn and syn.queue_on_teleport or queue_on_teleport or fluxus and fluxus.queue_on_teleport
+local requestfunc = syn and syn.request or http and http.request or http_request or fluxus and fluxus.request or getgenv().request or request
+
+local function checkassetversion()
+	local req = requestfunc({
+		Url = "https://raw.githubusercontent.com/BirthScripts/Scripts/main/assetversion.dat",
+		Method = "GET"
+	})
+	if req.StatusCode == 200 then
+		return req.Body
+	else
+		return nil
+	end
+end
 -- Objects
 
 warn("DISCONTINUED SCRIPT.")
